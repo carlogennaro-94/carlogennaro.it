@@ -1,5 +1,3 @@
-import Image from "next/image";
-import portraitPhoto from "@/public/carlo-gennaro.jpg";
 import styles from "./page.module.css";
 
 type Project = {
@@ -79,62 +77,29 @@ function Arrow() {
   );
 }
 
-function Portrait() {
-  return (
-    <div className={styles.portrait}>
-      <Image
-        className={styles.portraitImage}
-        src={portraitPhoto}
-        alt="Carlo Gennaro"
-        fill
-        sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 820px) 34vw, 400px"
-        preload
-      />
-    </div>
-  );
-}
-
-function ScreenshotPlaceholder({ project }: { project: Project }) {
-  return (
-    <div
-      className={styles.screenshotPlaceholder}
-      role="img"
-      aria-label={`Spazio riservato alle immagini di ${project.title}`}
-    >
-      <span>{project.title}</span>
-      <small>Immagini da inserire</small>
-    </div>
-  );
-}
-
 function ProjectCard({ project }: { project: Project }) {
-  const role = project.role ?? "Da definire";
-  const technologies = project.technologies?.length
-    ? project.technologies.join(", ")
-    : "Da confermare";
-
   return (
     <article
       className={styles.project}
       id={`progetto-${project.slug}`}
       aria-labelledby={`titolo-${project.slug}`}
     >
-      <ScreenshotPlaceholder project={project} />
-
       <div className={styles.projectContent}>
         <h3 id={`titolo-${project.slug}`}>{project.title}</h3>
         <p>{project.description}</p>
 
-        <dl className={styles.projectMeta}>
-          <div>
-            <dt>Ruolo</dt>
-            <dd>{role}</dd>
-          </div>
-          <div>
-            <dt>Tecnologie</dt>
-            <dd>{technologies}</dd>
-          </div>
-        </dl>
+        {project.role && project.technologies?.length && (
+          <dl className={styles.projectMeta}>
+            <div>
+              <dt>Ruolo</dt>
+              <dd>{project.role}</dd>
+            </div>
+            <div>
+              <dt>Tecnologie</dt>
+              <dd>{project.technologies.join(", ")}</dd>
+            </div>
+          </dl>
+        )}
 
         <div className={styles.projectActions}>
           {project.storeLinks?.appStore && (
@@ -162,13 +127,6 @@ function ProjectCard({ project }: { project: Project }) {
               Vedi il progetto <Arrow />
             </a>
           )}
-          {!project.storeLinks?.appStore &&
-            !project.storeLinks?.googlePlay &&
-            !project.caseStudyUrl && (
-              <p className={styles.projectPending}>
-                Scheda progetto in preparazione
-              </p>
-            )}
         </div>
       </div>
     </article>
@@ -215,7 +173,6 @@ export default function Home() {
             </div>
           </div>
 
-          <Portrait />
         </section>
 
         <section
@@ -226,8 +183,8 @@ export default function Home() {
           <div className={styles.sectionIntro}>
             <h2 id="work-title">Progetti selezionati</h2>
             <p>
-              Una selezione di prodotti su cui ho lavorato. Le schede saranno
-              completate solo con informazioni e materiali verificati.
+              Una selezione di prodotti digitali che ho sviluppato e seguito
+              nel tempo.
             </p>
           </div>
 
